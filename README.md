@@ -25,9 +25,31 @@ To try out the service, please go to http://localhost:8000/docs for API docs or 
 - Wrote a simple Helm chart for deploying the service to k8s.
 - Initialized Skaffold skeleton for development enviroment and production
 
-## Task 3: CI strategy for your service
+## Task 3: CI strategy for the service
 
-- A quick PoC with GitHub: https://github.com/locmai/name-redactor-service/actions
+I suggest keeping the CI workflows simple and lightweight.
+
+### Assumption 1: No specific cloud-vendor with GitHub
+
+Leverage GitHub Packages and GitHub Actions for the CI workflows:
+
+#### Tools / Services:
+
+- For workflow engine: GitHub Actions
+- For package registries: GitHub Packages
+- For code quality checking: SonarQube
+- For packaging image: Docker
+- Secrets and configurations will be stored in GitHub settings.
+
+#### Workflows:
+
+- Trigger on feature branchs to build staging images
+- Trigger on tags to build release images
+
+A quick PoC with GitHub:
+
+- https://github.com/locmai/name-redactor-service/actions
+- https://github.com/locmai/name-redactor-service/tree/develop/.github/workflows
 
 ```
 - Trigger when new commit pushed on 'feature' branches (branchs with the name "features/**"):
@@ -35,12 +57,80 @@ To try out the service, please go to http://localhost:8000/docs for API docs or 
 2. Build image and tag with the git commit SHA.
 3. Notify when the process is done
 
-- Trigger when new tag pushed on 'master' branch:
-1. Run unit tests and code quality scanning (e.g. SonarQube) => Publish the result on GitHub / Send notification
+- Trigger when new tag pushed:
+1. Run unit tests and code quality checking => Publish the result on GitHub / Send notification
 2. Build image and tag with the git tag for the release version.
 3. Notify when the process is done
 
 - Notes:
 + Configurations could be passed throught the env_var or configuration files
 + Secrets must be hidden.
+```
+
+### Assumption 2: A specific cloud-vendor
+
+Use almost every services provided by the vendor - example: Azure
+
+#### Tools / Services:
+
+- For workflow engine: Azure Pipeline
+- For package registries: Azure Artifacts / Azure Container Registry
+- For code quality checking: SonarQube
+- For packaging image: Docker
+- Secrets and configurations will be stored in Azure settings.
+
+#### Workflows:
+
+- Same as assumption 1
+
+### Other suggestions:
+
+- Use kaniko to build docker images - leverage caching from cloud storage and build images in no-docker environments.
+- Notify or display the CI information in one place so everyone could keep track easily. (GitHub PR review section or Slack channels)
+
+### How to handle zero-downtime upgrade of the services
+
+- Prepare a failover instance to serve the traffic outside of Kubernetes cluster - it could be on another cloud.
+- Deploy at least 3 instances. As we use Kubernetes, rolling update is a common solution. I have set the health check for the service.
+
+---
+
+## Setup Environment
+
+### Prerequisites
+
+- python3
+- pip
+- virtualenv
+- kubectl
+- helm2
+- docker
+
+### Install dependencies
+
+With virtualenv:
+
+```
+virtualenv env
+source ./env/bin/activate
+```
+
+Install dependencies:
+
+```
+pip install -r requirements.txt
+```
+
+### Start development
+
+With uvicorn
+
+```
+uvicorn main:app --reload
+```
+
+With Skaffold
+
+```
+skaffold dev
 ```
