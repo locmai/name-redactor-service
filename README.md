@@ -16,8 +16,7 @@ To try out the service, please go to http://localhost:8000/docs for API docs or 
 
 - Assuming we might have an NLP service to detect human's name in the data. I used [spaCy](https://spacy.io/) library with their default model for English. - The real model should be trained by a different process and store in cloud storage like S3 or Azure Storage and mounted to the container at runtime to minimize the Docker image and separate the concerns of NLP model with business logic.
 - Implemented two methods, GET request (fetch from the given [source](http://therecord.co/feed.json)) or POST request with the JSON body using [fastAPI](https://fastapi.tiangolo.com/) framework - which I found it was similar to Flask but faster and more handy tools were given.
-- I tried to recursively handle the JSON data which led to slow performance. Another solution could be parsing all the data to string and replace them all.
--
+- I tried to recursively handle the JSON data which led to slow performance (and spaghetti code ...). Another solution could be parsing all the data to string and replace them all.
 
 ## Task 2: Package the service & deploy to a k8s cluster
 
@@ -45,6 +44,8 @@ Leverage GitHub Packages and GitHub Actions for the CI workflows:
 
 - Trigger on feature branchs to build staging images
 - Trigger on tags to build release images
+
+![Image of CI](https://raw.githubusercontent.com/locmai/name-redactor-service/develop/docs/CI.png)
 
 A quick PoC with GitHub:
 
@@ -134,3 +135,9 @@ With Skaffold
 ```
 skaffold dev
 ```
+
+### Swagger
+
+![Image of Swagger 1](https://raw.githubusercontent.com/locmai/name-redactor-service/develop/docs/ScreenShot2020-03-10-1.png)
+
+![Image of Swagger 2](https://raw.githubusercontent.com/locmai/name-redactor-service/develop/docs/ScreenShot2020-03-10-3.png)
