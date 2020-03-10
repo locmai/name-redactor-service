@@ -1,4 +1,4 @@
-name: uild Docker image on Push to Feature branches
+name: Build Docker image on Push to Feature branches
 
 on:
   push:
@@ -18,4 +18,4 @@ jobs:
     - name: Login to Registry
       run: docker login docker.pkg.github.com -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
     - name: Publish to Registry
-      run: docker push docker.pkg.github.com/${{ github.repository }}/hello-world:$GITHUB_SHA
+      run: docker push docker.pkg.github.com/${{ github.repository }}/name-redactor-service:$GITHUB_SHA
