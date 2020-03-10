@@ -2,6 +2,8 @@
 
 ![Build Docker image on Push to Feature branches](https://github.com/locmai/name-redactor-service/workflows/Build%20Docker%20image%20on%20Push%20to%20Feature%20branches/badge.svg)
 
+![Build Docker image with Tag](https://github.com/locmai/name-redactor-service/workflows/Build%20Docker%20image%20with%20Tag/badge.svg)
+
 ## Quickstart with Docker
 
 ```bash
@@ -24,3 +26,21 @@ To try out the service, please go to http://localhost:8000/docs for API docs or 
 - Initialized Skaffold skeleton for development enviroment and production
 
 ## Task 3: CI strategy for your service
+
+- A quick PoC with GitHub: https://github.com/locmai/name-redactor-service/actions
+
+```
+- Trigger when new commit pushed on 'feature' branches (branchs with the name "features/**"):
+1. Run unit tests and code quality scanning (e.g. SonarQube) => Publish the result on GitHub / Send notification
+2. Build image and tag with the git commit SHA.
+3. Notify when the process is done
+
+- Trigger when new tag pushed on 'master' branch:
+1. Run unit tests and code quality scanning (e.g. SonarQube) => Publish the result on GitHub / Send notification
+2. Build image and tag with the git tag for the release version.
+3. Notify when the process is done
+
+- Notes:
++ Configurations could be passed throught the env_var or configuration files
++ Secrets must be hidden.
+```
