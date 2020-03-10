@@ -1,4 +1,4 @@
-name: Build Docker
+name: uild Docker image on Push to Feature branches
 
 on:
   push:

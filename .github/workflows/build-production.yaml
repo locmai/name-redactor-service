@@ -1,9 +1,9 @@
-name: Build Docker
+name: Build Docker image with Tag
 
 on:
   push:
     branches:    
-    - 'develop'
+    - 'master'
     tags:
     - 'v*'
 
