@@ -1,0 +1,21 @@
+replicaCount: 1
+
+image:
+  repository: locmai/name-redactor-service
+  tag: 0.1.0
+  pullPolicy: IfNotPresent
+
+nameOverride: ""
+fullnameOverride: ""
+
+service:
+  type: ClusterIP
+  port: 80
+  
+resources: {}
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
