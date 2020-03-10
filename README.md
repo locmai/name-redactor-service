@@ -1,5 +1,7 @@
 # Name Redactor Service
 
+![Build Docker image on Push to Feature branches](https://github.com/locmai/name-redactor-service/workflows/Build%20Docker%20image%20on%20Push%20to%20Feature%20branches/badge.svg)
+
 ## Quickstart with Docker
 
 ```bash
