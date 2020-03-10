@@ -27,21 +27,34 @@ def get_redacted_message_from_body(data: dict):
     return {"redacted": True, "data": handled_data}
 
 
-def handle_data(data) -> dict:
+def handle_data(data):
     result = {}
 
-    for k, v in data.items():
-        if isinstance(v, dict):
-            result[k] = handle_data(v)
-        elif isinstance(v, list):
-            tmp = []
-            for value in v:
-                tmp.append(handle_data(value))
-            result[k] = tmp
-        elif isinstance(v, str):
-            result[k] = replace_name(v)
-        else:
-            result[k] = v
+    if not isinstance(data, list) and not isinstance(data, dict) and not isinstance(data, str):
+        return data
+
+    if isinstance(data, str):
+        return replace_name(data)
+
+    if isinstance(data, list):
+        tmp = []
+        for value in data:
+            tmp.append(handle_data(value))
+        return tmp
+
+    if isinstance(data, dict):
+        for k, v in data.items():
+            if isinstance(v, dict):
+                result[k] = handle_data(v)
+            elif isinstance(v, list):
+                tmp = []
+                for value in v:
+                    tmp.append(handle_data(value))
+                result[k] = tmp
+            elif isinstance(v, str):
+                result[k] = replace_name(v)
+            else:
+                result[k] = v
     return result
 
 

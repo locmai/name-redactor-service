@@ -19,3 +19,6 @@ To try out the service, please go to http://localhost:8000/docs for API docs or 
 
 - Packaged the service with Docker.
 - Wrote a simple Helm chart for deploying the service to k8s.
+- Initialized Skaffold skeleton for development enviroment and production
+
+## Task 3: CI strategy for your service

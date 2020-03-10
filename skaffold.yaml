@@ -1,0 +1,27 @@
+apiVersion: skaffold/v2alpha4
+kind: Config
+
+build:
+  artifacts:
+  - image: locmai/name-redactor-service
+deploy:
+  helm:
+    releases:
+    - name: name-redactor-service
+      chartPath: helm-chart
+
+profiles:
+  - name: docker-desktop
+    activation:
+      - kubeContext: docker-desktop
+    build:
+      tagPolicy:
+        sha256: {}
+
+  - name: staging
+    activation:
+      - kubeContext: staging
+    build:
+      tagPolicy:
+        envTemplate:
+          template: "{{.IMAGE_NAME}}:{{.GIT_TAG}}"
